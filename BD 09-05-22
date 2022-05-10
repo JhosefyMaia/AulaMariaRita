@@ -1,6 +1,3 @@
-# AulaMariaRita
-Aulas de banco de dados
-
 create database Empresa2204
 default character set utf8
 default collate utf8_general_ci;
@@ -131,3 +128,49 @@ c.CodCliente = e.CodCliente;
 
 select Nome as Cliente, Fone as Telefone, Email as Email from Cliente c, Telefone t, Email e where 
 c.CodCliente = e.CodCliente and c.CodCliente = t.CodCliente;
+
+create table Livro (
+ISBN int primary key,
+DescLivro varchar(100),
+Preco decimal(6,2)) default charset = utf8;
+
+insert into Livro
+(ISBN, DescLivro, Preco)
+values
+('9123456789', 'A Jornada', '50.00'),
+('9546789123', 'Velhos Jogos', '60.00'),
+('9852741963', 'Um Dia Qualquer', '159.50'),
+('9564231879', 'Autoconfiaça', '99.90'),
+('9963852741', 'A Good Job', '75.50');
+
+create table Exemplar(
+CodExemplar int primary key auto_increment,
+ISBN bigint,
+foreign key (ISBN) references Livro(ISBN));
+
+insert into Exemplar
+(CodExemplar, ISBN)
+values
+(default, '9963852741'),
+(default, '9123456789'),
+(default, '9546789123'),
+(default, '9564231879'),
+(default, '9852741963');
+
+create table Emprestimo(
+CodCliente int auto_increment,
+CodExemplar int,
+Dataemp date,
+Datadev date,
+primary key (CodCliente,CodExemplar,Dataemp),
+foreign key (CodCliente) references Cliente(Codcliente),
+foreign key (CodExemplar) references Exemplar(CodExemplar));
+
+insert into Emprestimo
+(CodCliente, CodExemplar, Dataemp, Datadev)
+values
+(default, '9963852741', '2022/01/15', '2022/02/15'),
+(default, '9123456789', '2022/02/09', '2022/03/09'),
+(default, '9546789123', '2022/02/23', '2022/04/23'),
+(default, '9564231879', '2022/03/30', '2022/04/30'),
+(default, '9852741963', '2022/04/25', '2022/06/25');
